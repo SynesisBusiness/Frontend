@@ -10,10 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.45.1",
     "phosphor-react": "^1.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-query": "^3.39.3",
     "react-router-dom": "^6.24.0",
     "styled-components": "^6.1.11"
   },
