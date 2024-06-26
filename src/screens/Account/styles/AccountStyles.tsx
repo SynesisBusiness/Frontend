@@ -90,6 +90,15 @@ export const Action = styled.div`
 
     .icon__arrow {
       margin-right: 5px;
+      transition: 0.3s all;
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      .icon__arrow {
+        transform: translateX(3px);
+      }
     }
   }
 `;

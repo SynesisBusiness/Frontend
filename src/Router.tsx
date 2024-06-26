@@ -4,6 +4,7 @@ import Home from "./screens/Home/Home";
 import Account from "./screens/Account/Account";
 import FormClient from "./screens/FormClients/FormClient";
 import FormOwner from "./screens/FormOwner/FormOwner";
+import Diagnosis from "./screens/Diagnosis/Diagnosis";
 
 const Router = () => {
   return (
@@ -14,6 +15,8 @@ const Router = () => {
         <Route path="/account" element={<Account />} />
 
         <Route path="/forms/business" element={<FormOwner />} />
+
+        <Route path="/diagnosis" element={<Diagnosis />} />
 
         <Route path="/forms/costumers/:path_company" element={<FormClient />} />
       </Routes>
