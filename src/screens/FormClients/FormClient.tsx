@@ -16,7 +16,16 @@ import { useContextApi } from "../../context/Api";
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
-const questions = [
+interface Question {
+  question: string;
+  input_type: "multiple_choice" | "text" | "textarea";
+  options?: string[];
+  answer: string | string[];
+  description?: string;
+  range?: string;
+}
+
+const questions: Question[] = [
   {
     question: "What is your age group?",
     input_type: "multiple_choice",
@@ -35,6 +44,7 @@ const questions = [
     question: "What is your gender?",
     input_type: "multiple_choice",
     options: ["Male", "Female", "Non-binary", "Prefer not to say"],
+    answer: "",
   },
   {
     question: "Where do you live? City, State/Province, Country",
@@ -45,21 +55,21 @@ const questions = [
     question: "What are your main interests and hobbies? Select all that apply",
     input_type: "multiple_choice",
     options: ["Reading", "Sports", "Travel", "Technology"],
-    answer: "",
+    answer: [],
   },
   {
     question:
       "What values are most important to you when choosing a product or service? Select all that apply",
     input_type: "multiple_choice",
     options: ["Quality", "Price", "Brand reputation", "Environmental Impact"],
-    answer: "",
+    answer: [],
   },
   {
     question:
       "How do you usually interact with our company? Select all that apply",
     input_type: "multiple_choice",
     options: ["Website", "Social Media", "In-store", "Customer Service"],
-    answer: "",
+    answer: [],
   },
   {
     question: "How often do you visit our website or app? Select one",
@@ -93,9 +103,9 @@ const questions = [
       "High Quality",
       "Good customer service",
       "Competitive pricing",
-      "Innovate features",
+      "Innovative features",
     ],
-    answer: "",
+    answer: [],
   },
   {
     question: "What expectations do you have from our products/services?",
@@ -166,7 +176,22 @@ const FormClient: React.FC = () => {
 
   const handleAnswerChange = (questionIndex: number, answer: string) => {
     const newQuestionsState = [...questionsState];
-    newQuestionsState[questionIndex].answer = answer;
+    const currentAnswer = newQuestionsState[questionIndex].answer;
+
+    if (Array.isArray(currentAnswer)) {
+      if (currentAnswer.includes(answer)) {
+        // Remove the answer if it's already selected
+        newQuestionsState[questionIndex].answer = currentAnswer.filter(
+          (ans) => ans !== answer
+        );
+      } else {
+        // Add the answer if it's not selected
+        newQuestionsState[questionIndex].answer = [...currentAnswer, answer];
+      }
+    } else {
+      newQuestionsState[questionIndex].answer = answer;
+    }
+
     setQuestionsState(newQuestionsState);
   };
 
@@ -174,9 +199,13 @@ const FormClient: React.FC = () => {
     e.preventDefault();
 
     // Check that all answers have been completed
-    const allAnswered = questionsState.every(
-      (question) => question.answer !== ""
-    );
+    const allAnswered = questionsState.every((question) => {
+      if (Array.isArray(question.answer)) {
+        return question.answer.length > 0;
+      }
+      return question.answer !== "";
+    });
+
     if (!allAnswered) {
       toast("Please answer all the questions.", {
         type: "warning",
@@ -258,7 +287,7 @@ const FormClient: React.FC = () => {
                     <input
                       type="text"
                       placeholder="Type here..."
-                      value={question.answer}
+                      value={question.answer as string}
                       onChange={(e) =>
                         handleAnswerChange(index, e.target.value)
                       }
@@ -267,7 +296,7 @@ const FormClient: React.FC = () => {
                   {question.input_type === "textarea" && (
                     <textarea
                       placeholder="Type here..."
-                      value={question.answer}
+                      value={question.answer as string}
                       onChange={(e) =>
                         handleAnswerChange(index, e.target.value)
                       }
@@ -280,7 +309,11 @@ const FormClient: React.FC = () => {
                           <Button
                             type="button"
                             key={optionIndex}
-                            selected={question.answer === option}
+                            selected={
+                              Array.isArray(question.answer)
+                                ? question.answer.includes(option)
+                                : question.answer === option
+                            }
                             onClick={() => handleAnswerChange(index, option)}
                           >
                             {option}
