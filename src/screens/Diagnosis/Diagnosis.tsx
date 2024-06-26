@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { BallTriangle } from "react-loading-icons";
 
 import * as styles from "./styles/DiagnosisStyles";
 
 const Diagnosis: React.FC = () => {
-  const [loading, setLoading] = useState<boolean>(true);
-
   return (
     <styles.Container>
       <styles.LoadingScreen>
