@@ -7,7 +7,11 @@ import {
   Question,
   Button,
   Action,
+  Logo,
 } from "./styles/FormClientStyles";
+
+import logo from "../../assets/logos/logo.svg";
+import { RocketLaunch } from "phosphor-react";
 
 const questions = [
   {
@@ -103,7 +107,7 @@ const questions = [
     question: "How satisfied are you with our products/services?",
     input_type: "multiple_choice",
     options: ["01", "02", "03", "04", "05"],
-    description: "Very Dissatisfied - Very Satisfied",
+    range: "Very Dissatisfied - Very Satisfied",
   },
   {
     question: "What do you like most about our products/services?",
@@ -115,14 +119,14 @@ const questions = [
       "How likely are you to recommend our products/services to others?",
     input_type: "multiple_choice",
     options: ["01", "02", "03", "04", "05"],
-    description: "Very Unlikely - Very Likely",
+    range: "Very Unlikely - Very Likely",
   },
   {
     question:
       "How likely are you to continue using our products/services in the future?",
     input_type: "multiple_choice",
     options: ["01", "02", "03", "04", "05"],
-    description: "Very Unlikely - Very Likely",
+    range: "Very Unlikely - Very Likely",
   },
 ];
 
@@ -145,30 +149,38 @@ const FormClient: React.FC = () => {
   return (
     <Container>
       <Main>
+        <Logo>
+          <img src={logo} alt="Logo synesis" />
+        </Logo>
+
         <Title>
           <h1>Questionnaire for customers</h1>
           <p>Your opinion is important to us!</p>
         </Title>
 
         <Form onSubmit={handleSubmit}>
-          <h2>Information about you</h2>
+          <h3>Information about you</h3>
           <p>17 questions</p>
 
           {questions.map((question, index) => (
             <Question key={index}>
-              <label>{`${index + 1}. ${question.question}`}</label>
+              <label
+                className={!question.description ? "margin__bottom" : ""}
+              >{`${index + 1}. ${question.question}`}</label>
               {question.description && <p>{question.description}</p>}
               {question.input_type === "text" && (
                 <input
                   type="text"
                   value={formData[index]}
                   onChange={(e) => handleInputChange(index, e.target.value)}
+                  placeholder="Type here..."
                 />
               )}
               {question.input_type === "textarea" && (
                 <textarea
                   value={formData[index]}
                   onChange={(e) => handleInputChange(index, e.target.value)}
+                  placeholder="Type here..."
                 />
               )}
               {question.input_type === "multiple_choice" && (
@@ -185,31 +197,62 @@ const FormClient: React.FC = () => {
                       </Button>
                     ))}
                   </div>
-                  {question.description === "Very Unlikely - Very Likely" && (
+                  {question.range === "Very Unlikely - Very Likely" && (
                     <div
                       style={{
                         display: "flex",
                         fontSize: "0.9rem",
                       }}
                     >
-                      <span style={{ marginRight: "220px" }}>
+                      <span
+                        style={{
+                          marginRight: "220px",
+                          marginTop: "5px",
+                          color: "#555",
+                          fontSize: "0.85rem",
+                        }}
+                      >
                         Very Unlikely
                       </span>
-                      <span>Very Likely</span>
+                      <span
+                        style={{
+                          marginRight: "220px",
+                          marginTop: "5px",
+                          color: "#555",
+                          fontSize: "0.85rem",
+                        }}
+                      >
+                        Very Likely
+                      </span>
                     </div>
                   )}
-                  {question.description ===
-                    "Very Dissatisfied - Very Satisfied" && (
+                  {question.range === "Very Dissatisfied - Very Satisfied" && (
                     <div
                       style={{
                         display: "flex",
                         fontSize: "0.9rem",
                       }}
                     >
-                      <span style={{ marginRight: "180px" }}>
+                      <span
+                        style={{
+                          marginRight: "180px",
+                          marginTop: "5px",
+                          color: "#555",
+                          fontSize: "0.85rem",
+                        }}
+                      >
                         Very Dissatisfied
                       </span>
-                      <span>Very Satisfied</span>
+                      <span
+                        style={{
+                          marginRight: "180px",
+                          marginTop: "5px",
+                          color: "#555",
+                          fontSize: "0.85rem",
+                        }}
+                      >
+                        Very Satisfied
+                      </span>
                     </div>
                   )}
                 </>
@@ -219,7 +262,7 @@ const FormClient: React.FC = () => {
 
           <Action>
             <button type="submit">
-              Submit <span className="icon__arrow">→</span>
+              Submit <RocketLaunch size={20} className="icon__rocket" />{" "}
             </button>
           </Action>
         </Form>

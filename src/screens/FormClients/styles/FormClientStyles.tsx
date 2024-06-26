@@ -7,8 +7,19 @@ export const Container = styled.div`
 `;
 
 export const Main = styled.div`
-  min-width: 40vw;
-  padding-top: 100px;
+  min-width: 60vw;
+  padding: 60px 0px;
+`;
+
+export const Logo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+
+  img {
+    width: 200px;
+  }
 `;
 
 export const Title = styled.div`
@@ -26,8 +37,8 @@ export const Title = styled.div`
 `;
 
 export const Form = styled.form`
-  h2 {
-    font-size: 1.2rem;
+  h3 {
+    font-size: 1.1rem;
     font-weight: 500;
     margin-bottom: 10px;
   }
@@ -42,26 +53,37 @@ export const Form = styled.form`
 export const Question = styled.div`
   margin-bottom: 35px;
 
+  p {
+    color: red;
+    font-size: 0.9rem;
+    color: #555;
+    padding: 2px 0px;
+    margin-bottom: 5px;
+  }
+
+  .margin__bottom {
+    margin-bottom: 5px;
+  }
+
   label {
     display: block;
     font-size: 1rem;
-    margin-bottom: 10px;
   }
 
   input,
   textarea {
     width: 100%;
-    padding: 10px;
-
-    border: none;
+    padding: 5px 0px;
+    border: transparent;
     border-bottom: 1px solid #78d2e5;
-    font-size: 14px;
-    outline: none;
+    font-size: 0.95rem;
+    outline: transparent;
+    resize: none;
   }
 
   textarea {
     height: 100px;
-    resize: vertical;
+    resize: none;
   }
 
   .buttonGroup {
@@ -75,15 +97,15 @@ export const Button = styled.button<{ selected?: boolean }>`
   padding: 10px 20px;
   border: 1px solid #78d2e5;
   border-radius: 20px;
-  background: ${(props) => (props.selected ? "#78d2e5" : "none")};
-  color: ${(props) => (props.selected ? "white" : "inherit")};
-  cursor: pointer;
-  font-size: 14px;
-  margin-bottom: 10px;
+  background-color: ${({ selected }) => (selected ? "#007bff" : "transparent")};
+  color: ${({ selected }) => (selected ? "#fff" : "#000")};
+  border: 2px solid #78d2e5;
+  border-radius: 20px;
+  font-size: 0.95rem;
 
   &:hover {
-    background-color: #78d2e5;
-    color: white;
+    cursor: pointer;
+    background-color: ${({ selected }) => (selected ? "#0056b3" : "#e0e0e0")};
   }
 `;
 
@@ -107,22 +129,30 @@ export const Action = styled.div`
   }
 
   button {
-    background-color: transparent;
-    border: 1px solid #78d2e5;
-    color: #111;
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 20px;
+    font-size: 0.95rem;
+    border: transparent;
+    outline: transparent;
+    border-radius: 5px;
     display: flex;
     align-items: center;
-    padding: 6px 15px;
-    border-radius: 15px;
-    transition: background-color 0.3s, color 0.3s;
+    justify-content: center;
+    transition: 0.3s all;
 
-    .icon__arrow {
-      margin-right: 5px;
+    .icon__rocket {
+      margin-left: 5px;
+      transition: 0.3s all;
     }
 
     &:hover {
-      background-color: #78d2e5;
-      color: white;
+      cursor: pointer;
+      background-color: #0056b3;
+
+      .icon__rocket {
+        transform: translateY(-3px);
+      }
     }
   }
 `;

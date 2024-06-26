@@ -15,7 +15,7 @@ const Router = () => {
 
         <Route path="/forms/business" element={<FormOwner />} />
 
-        <Route path="/forms/costumer/:path_company" element={<FormClient />} />
+        <Route path="/forms/costumers/:path_company" element={<FormClient />} />
       </Routes>
     </BrowserRouter>
   );
