@@ -5,11 +5,18 @@ import "./App.css";
 import Router from "./Router";
 import queryClient from "./services/queryClient";
 
+import { ContextApiProvider } from "./context/Api";
+import { AuthProvider } from "./context/AuthContext";
+
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router />
-    </QueryClientProvider>
+    <ContextApiProvider>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <Router />
+        </QueryClientProvider>
+      </AuthProvider>
+    </ContextApiProvider>
   );
 };
 
