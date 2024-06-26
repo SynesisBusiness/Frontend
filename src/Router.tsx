@@ -4,6 +4,7 @@ import Home from "./screens/Home/Home";
 import Account from "./screens/Account/Account";
 import FormClient from "./screens/FormClients/FormClient";
 import FormOwner from "./screens/FormOwner/FormOwner";
+import FormAnalyticsOwner from "./screens/FormAnalytics/FormAnalyticsOwner";
 
 const Router = () => {
   return (
@@ -16,6 +17,8 @@ const Router = () => {
         <Route path="/forms/business" element={<FormOwner />} />
 
         <Route path="/forms/costumers/:path_company" element={<FormClient />} />
+
+        <Route path="/forms/analytics" element={<FormAnalyticsOwner />} />
       </Routes>
     </BrowserRouter>
   );
