@@ -5,14 +5,20 @@ import {
   Title,
   Form,
   Question,
-  Button,
+  //Button,
   Action,
   Logo,
 } from "./styles/FormAnalyticsOwnerStyles";
 import logo from "../../assets/logos/logo.svg";
 import { RocketLaunch } from "phosphor-react";
 
-const website_questions = [
+interface Question {
+  question: string;
+  input_type: "multiple_choice" | "text" | "textarea";
+  options?: string[];
+}
+
+const website_questions: Question[] = [
   {
     question: "What is your website's monthly traffic?",
     input_type: "multiple_choice",
@@ -180,7 +186,7 @@ const FormAnalyticsOwner: React.FC = () => {
                           placeholder="Type here..."
                         />
                       )}
-                      {question.input_type === "multiple_choice" && (
+                      {/* {question.input_type === "multiple_choice" && (
                         <div className="buttonGroup">
                           {question.options?.map((option, optionIndex) => (
                             <Button
@@ -195,7 +201,7 @@ const FormAnalyticsOwner: React.FC = () => {
                             </Button>
                           ))}
                         </div>
-                      )}
+                      )} */}
                     </Question>
                     {questionIndex++}
                   </>
