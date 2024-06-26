@@ -192,7 +192,9 @@ const FormClient: React.FC = () => {
                         fontSize: "0.9rem",
                       }}
                     >
-                      <span style={{ marginRight: "220px" }}>Very Unlikely</span>
+                      <span style={{ marginRight: "220px" }}>
+                        Very Unlikely
+                      </span>
                       <span>Very Likely</span>
                     </div>
                   )}
@@ -204,7 +206,9 @@ const FormClient: React.FC = () => {
                         fontSize: "0.9rem",
                       }}
                     >
-                      <span style={{ marginRight: "180px" }}>Very Dissatisfied</span>
+                      <span style={{ marginRight: "180px" }}>
+                        Very Dissatisfied
+                      </span>
                       <span>Very Satisfied</span>
                     </div>
                   )}

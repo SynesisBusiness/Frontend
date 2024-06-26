@@ -39,12 +39,12 @@ export const handleLogin = async (
     );
 
     if (!response) {
-      toast("Email e/ou senha incorretos", {
+      toast("Incorrect email and/or password", {
         autoClose: 2500,
         type: "error",
       });
     } else {
-      console.log("navigate login success");
+      navigate("/forms/business");
     }
   } catch (error) {
     console.error("Failed to login", error);
@@ -65,7 +65,7 @@ export const handleRegister = async (
   ) => Promise<RecordAuthResponse<RecordModel> | null | undefined>
 ) => {
   if (data.password.length < 8) {
-    return toast("A senha deve conter no mínimo 8 caracteres", {
+    return toast("The password must contain at least 8 characters", {
       autoClose: 2500,
       type: "warning",
     });
@@ -92,17 +92,13 @@ export const handleRegister = async (
         );
 
         if (!response) {
-          toast("Email e/ou senha incorretos", {
+          toast("Incorrect email and/or password", {
             autoClose: 2500,
             type: "error",
           });
         } else {
-          // if (redirectForm) {
-          //   navigate("/diagnostico/form");
-          // } else {
-          //   navigate("/perfil");
-          // }
-          console.log("/navigate login success");
+          toast("Account created successfully");
+          navigate("/forms/business");
         }
       })
       .catch((e: ClientResponseError) => {
@@ -112,14 +108,14 @@ export const handleRegister = async (
             e.response.data.email.message ===
               "The email is invalid or already in use."
           ) {
-            toast("Este email já está em uso!", {
+            toast("The email is invalid or already in use", {
               autoClose: 2500,
               type: "error",
             });
           }
         } catch (e) {
           console.log(e);
-          toast("Erro interno ao criar conta", {
+          toast("Internal error when creating account", {
             autoClose: 2500,
             type: "error",
           });

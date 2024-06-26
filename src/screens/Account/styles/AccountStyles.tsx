@@ -16,6 +16,7 @@ export const Logo = styled.div`
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
+
   img {
     width: 200px;
   }
@@ -34,6 +35,7 @@ export const Title = styled.div`
     margin-bottom: 20px;
   }
 `;
+
 export const Form = styled.div`
   h3 {
     font-size: 1.1rem;

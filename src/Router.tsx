@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./screens/Home/Home";
 import Account from "./screens/Account/Account";
 import FormClient from "./screens/FormClients/FormClient";
+import FormOwner from "./screens/FormOwner/FormOwner";
 
 const Router = () => {
   return (
@@ -11,6 +12,8 @@ const Router = () => {
         <Route path="/" element={<Home />} />
 
         <Route path="/account" element={<Account />} />
+
+        <Route path="/forms/business" element={<FormOwner />} />
 
         <Route path="/forms/costumer/:path_company" element={<FormClient />} />
       </Routes>
