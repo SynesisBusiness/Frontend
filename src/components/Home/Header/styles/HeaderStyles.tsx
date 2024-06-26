@@ -16,7 +16,11 @@ export const Main = styled.div`
   align-items: center;
 
   @media (max-width: 599px) {
-    width: 95%;
+    width: 90%;
+  }
+
+  @media (min-width: 1800px) {
+    width: 70%;
   }
 `;
 
@@ -26,7 +30,7 @@ export const Logo = styled.div`
     transform: translateY(3px);
 
     @media (max-width: 599px) {
-      width: 200px;
+      width: 180px;
     }
   }
 `;

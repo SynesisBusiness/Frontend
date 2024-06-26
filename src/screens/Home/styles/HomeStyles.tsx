@@ -25,6 +25,14 @@ export const BannerContent = styled.div`
 
 export const BannerMain = styled.div`
   width: 80%;
+
+  @media (max-width: 599px) {
+    width: 90%;
+  }
+
+  @media (min-width: 1800px) {
+    width: 70%;
+  }
 `;
 
 export const BannerText = styled.div`
@@ -32,12 +40,20 @@ export const BannerText = styled.div`
     font-size: 2.5rem;
     font-weight: 600;
     margin-bottom: 10px;
+
+    @media (max-width: 599px) {
+      font-size: 1.7rem;
+    }
   }
 
   h2 {
     font-size: 1.3rem;
     color: #111;
     font-weight: 600;
+
+    @media (max-width: 599px) {
+      font-size: 1rem;
+    }
   }
 `;
 
@@ -73,6 +89,10 @@ export const Squares = styled.div`
       z-index: 0;
     }
   }
+
+  @media (max-width: 1200px) {
+    display: none;
+  }
 `;
 
 export const Main = styled.div`
@@ -80,12 +100,25 @@ export const Main = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
+
+  @media (max-width: 599px) {
+    width: 90%;
+  }
+
+  @media (min-width: 1800px) {
+    width: 70%;
+  }
 `;
 
 export const HelpSection = styled.div`
   padding-top: 100px;
   display: flex;
   width: 100%;
+
+  @media (max-width: 960px) {
+    flex-direction: column;
+    padding-top: 50px;
+  }
 `;
 
 export const HelpTitle = styled.div`
@@ -95,11 +128,29 @@ export const HelpTitle = styled.div`
     font-size: 1.6rem;
     font-weight: 500;
     margin-bottom: 10px;
+    padding-right: 10px;
+
+    @media (max-width: 599px) {
+      font-size: 1.4rem;
+    }
+
+    @media (max-width: 960px) {
+      padding-right: 0px;
+    }
   }
 
   p {
     font-size: 1rem;
     line-height: 1.5;
+    padding-right: 30px;
+
+    @media (max-width: 960px) {
+      padding-right: 0px;
+    }
+  }
+
+  @media (max-width: 960px) {
+    width: 100%;
   }
 `;
 
@@ -108,6 +159,12 @@ export const HelpCards = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+
+  @media (max-width: 960px) {
+    width: 100%;
+    margin-top: 30px;
+    justify-content: center;
+  }
 `;
 
 export const HelpCard = styled.div<{ flipped?: boolean }>`
@@ -122,8 +179,27 @@ export const HelpCard = styled.div<{ flipped?: boolean }>`
     margin-bottom: 30px;
   }
 
+  &:nth-child(1),
+  &:nth-child(3) {
+    @media (min-width: 600px) and (max-width: 960px) {
+      margin-right: 30px;
+    }
+  }
+
   &:hover {
     cursor: pointer;
+  }
+
+  @media (max-width: 599px) {
+    width: 90%;
+  }
+
+  @media (min-width: 600px) and (max-width: 768px) {
+    width: 45%;
+  }
+
+  @media (min-width: 769px) and (max-width: 960px) {
+    width: 45%;
   }
 `;
 
@@ -200,6 +276,11 @@ export const GrowthCard = styled.div`
   background-color: #373a36;
   border-radius: 10px;
   overflow: hidden;
+
+  @media (max-width: 960px) {
+    flex-direction: column;
+    height: auto;
+  }
 `;
 
 export const GrowthImage = styled.div`
@@ -208,6 +289,16 @@ export const GrowthImage = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  @media (max-width: 599px) {
+    width: 100%;
+    min-height: 200px;
+  }
+
+  @media (min-width: 600px) and (max-width: 960px) {
+    width: 100%;
+    min-height: 250px;
+  }
 `;
 
 export const GrowthDescription = styled.div`
@@ -219,6 +310,10 @@ export const GrowthDescription = styled.div`
     font-size: 1.6rem;
     font-weight: 500;
     margin-bottom: 10px;
+
+    @media (max-width: 599px) {
+      font-size: 1.4rem;
+    }
   }
 
   p {
@@ -252,6 +347,10 @@ export const GrowthDescription = styled.div`
       }
     }
   }
+
+  @media (max-width: 960px) {
+    width: 100%;
+  }
 `;
 
 export const Contact = styled.div`
@@ -268,6 +367,10 @@ export const Contact = styled.div`
     font-size: 1.6rem;
     font-weight: 500;
     margin-bottom: 10px;
+
+    @media (max-width: 599px) {
+      font-size: 1.4rem;
+    }
   }
 
   p {
@@ -298,5 +401,9 @@ export const Contact = styled.div`
       background-color: #111;
       cursor: pointer;
     }
+  }
+
+  @media (max-width: 960px) {
+    padding: 20px;
   }
 `;
