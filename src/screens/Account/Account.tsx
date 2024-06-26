@@ -105,7 +105,7 @@ const Account: React.FC = () => {
             <span>Password*</span>
 
             <input
-              type="text"
+              type="password"
               name="password"
               id="password"
               placeholder="Enter your password..."
