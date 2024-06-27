@@ -9,6 +9,10 @@ export const Container = styled.div`
 export const Main = styled.div`
   min-width: 60vw;
   padding: 60px 0px;
+
+  @media (max-width: 1200px) {
+    padding: 60px 15px;
+  }
 `;
 
 export const Logo = styled.div`
@@ -49,6 +53,10 @@ export const SectionTitle = styled.h3`
 export const Question = styled.div`
   margin-bottom: 25px;
   margin-left: 20px;
+
+  @media (max-width: 599px) {
+    margin-left: 0px;
+  }
 `;
 
 export const QuestionTitle = styled.p`
@@ -80,6 +88,7 @@ export const Textarea = styled.textarea`
 
 export const Options = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 `;
 
@@ -94,6 +103,10 @@ export const Option = styled.button<{ selected: boolean }>`
   &:hover {
     cursor: pointer;
     background-color: ${({ selected }) => (selected ? "#0056b3" : "#e0e0e0")};
+  }
+
+  @media (max-width: 599px) {
+    padding: 7px 15px;
   }
 `;
 

@@ -9,6 +9,14 @@ export const Container = styled.div`
 export const Main = styled.div`
   min-width: 40vw;
   padding-top: 100px;
+
+  @media (max-width: 599px) {
+    width: 90vw;
+  }
+
+  @media (min-width: 1800px) {
+    min-width: 32vw;
+  }
 `;
 
 export const Logo = styled.div`

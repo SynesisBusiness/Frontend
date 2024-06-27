@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { CheckCircle, RocketLaunch, Warning } from "phosphor-react";
+import { ToastContainer, toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+
 import {
   Container,
   Main,
@@ -11,10 +14,10 @@ import {
   Logo,
   Error,
 } from "./styles/FormClientStyles";
+
 import logo from "../../assets/logos/logo.svg";
+
 import { useContextApi } from "../../context/Api";
-import { useParams } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 
 interface Question {
   question: string;
@@ -386,7 +389,7 @@ const FormClient: React.FC = () => {
 
               <Action>
                 <button type="submit">
-                  {loadingRequest && "Aguarde..."}
+                  {loadingRequest && "Wait..."}
 
                   {!loadingRequest && (
                     <>

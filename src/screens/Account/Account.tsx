@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import { ArrowRight } from "phosphor-react";
 import Client from "pocketbase";
 import { ToastContainer } from "react-toastify";
@@ -12,6 +13,7 @@ import { handleRegister, handleLogin } from "./controllers/AccountController";
 import { useContextApi } from "../../context/Api";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 interface DataRegister {
   name: string;
@@ -40,6 +42,30 @@ const Account: React.FC = () => {
     password: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
+
+  const verifyAccount = async (userID: string) => {
+    const response = await backendClient?.collection("users").getFullList({
+      filter: `id="${userID}"`,
+    });
+
+    if (response && response.length >= 1) {
+      navigate("/forms/business/1");
+    }
+  };
+
+  useEffect(() => {
+    try {
+      const decoded: { id: string } = jwtDecode(
+        localStorage.getItem("tokenJWT") as string
+      );
+      console.log(decoded);
+      if (decoded) {
+        verifyAccount(decoded.id);
+      }
+    } catch (e) {
+      console.log(`User not logged`);
+    }
+  }, [backendClient]);
 
   return (
     <styles.Container>
@@ -167,7 +193,7 @@ const Account: React.FC = () => {
               <ArrowRight size={18} color="#111" className="icon__arrow" />
               {isRegister && !loading && "Register"}
               {!isRegister && !loading && "Login"}
-              {loading && "Aguarde..."}
+              {loading && "Wait..."}
             </button>
           </styles.Action>
         </styles.Form>

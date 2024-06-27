@@ -43,7 +43,7 @@ const Router = () => {
         <Route path="/account" element={<Account />} />
 
         <Route
-          path="/forms/business"
+          path="/forms/business/1"
           element={
             <PrivateRoute>
               <FormOwner />
@@ -60,9 +60,16 @@ const Router = () => {
           }
         />
 
-        <Route path="/forms/costumers/:path_company" element={<FormClient />} />
+        <Route
+          path="/forms/business/2"
+          element={
+            <PrivateRoute>
+              <FormAnalyticsOwner />
+            </PrivateRoute>
+          }
+        />
 
-        <Route path="/forms/analytics" element={<FormAnalyticsOwner />} />
+        <Route path="/forms/costumers/:path_company" element={<FormClient />} />
       </Routes>
     </BrowserRouter>
   );

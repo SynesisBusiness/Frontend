@@ -44,7 +44,7 @@ export const handleLogin = async (
         type: "error",
       });
     } else {
-      navigate("/forms/business");
+      navigate("/forms/business/1");
     }
   } catch (error) {
     console.error("Failed to login", error);
@@ -98,7 +98,7 @@ export const handleRegister = async (
           });
         } else {
           toast("Account created successfully");
-          navigate("/forms/business");
+          navigate("/forms/business/1");
         }
       })
       .catch((e: ClientResponseError) => {

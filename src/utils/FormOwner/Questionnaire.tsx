@@ -6,12 +6,12 @@ interface Question {
   options?: string[];
 }
 
-interface QuestionarySection {
+interface QuestionnaireSection {
   section: string;
   questions: Question[];
 }
 
-export const QuestionaryData: QuestionarySection[] = [
+export const QuestionnaireData: QuestionnaireSection[] = [
   {
     section: "Industry and Market",
     questions: [
