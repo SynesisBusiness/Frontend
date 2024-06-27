@@ -1,9 +1,10 @@
 interface Question {
   question: string;
-  answer: string;
+  answer: string | string[];
   input_type: "text" | "textarea" | "multiple_choice";
   loading: boolean;
   options?: string[];
+  range?: string;
 }
 
 interface QuestionnaireSection {
@@ -60,14 +61,14 @@ export const QuestionnaireData: QuestionnaireSection[] = [
     questions: [
       {
         question: "6. What sales strategies are currently in place?",
-        answer: "",
+        answer: [],
         input_type: "multiple_choice",
         options: ["Direct sales", "Online sales", "Partnerships"],
         loading: false,
       },
       {
         question: "7. What marketing channels do you currently use?",
-        answer: "",
+        answer: [],
         input_type: "multiple_choice",
         options: ["Social media", "E-mail marketing", "SEO", "PPC"],
         loading: false,
@@ -126,43 +127,7 @@ export const QuestionnaireData: QuestionnaireSection[] = [
         input_type: "multiple_choice",
         options: ["1", "2", "3", "4", "5"],
         loading: false,
-      },
-    ],
-  },
-  {
-    section: "Key Performance Indicators (KPIs)",
-    questions: [
-      {
-        question: "10.  What KPIs do you currently track?",
-        answer: "",
-        input_type: "multiple_choice",
-        options: [
-          "Monthly sales",
-          "Customer acquisition cost",
-          "Customer lifetime value",
-        ],
-        loading: false,
-      },
-    ],
-  },
-
-  {
-    section: "Lead generation",
-    questions: [
-      {
-        question: "11. How do you currently generate leads?",
-        answer: "",
-        input_type: "multiple_choice",
-        options: ["Through online forms", "Events", "Partnerships"],
-        loading: false,
-      },
-      {
-        question:
-          "12. How would you rate the quality of the leads you generate?",
-        answer: "",
-        input_type: "multiple_choice",
-        options: ["1", "2", "3", "4", "5"],
-        loading: false,
+        range: "Very poor - Excellent",
       },
     ],
   },
@@ -195,8 +160,9 @@ export const QuestionnaireData: QuestionnaireSection[] = [
       },
       {
         question: "16. What are the main touchpoints in the customer journey?",
-        answer: "",
-        input_type: "textarea",
+        answer: [],
+        input_type: "multiple_choice",
+        options: ["Website visit", "Email interaction", "Sales Call"],
         loading: false,
       },
     ],

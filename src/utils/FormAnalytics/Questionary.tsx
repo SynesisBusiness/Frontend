@@ -1,6 +1,6 @@
 interface Question {
   question: string;
-  answer: string;
+  answer: string | string[];
   input_type: "text" | "textarea" | "multiple_choice";
   loading: boolean;
   options?: string[];
@@ -24,7 +24,7 @@ export const QuestionaryData: QuestionarySection[] = [
       },
       {
         question: "2. What are the key performance metrics for your website?",
-        answer: "",
+        answer: [],
         input_type: "multiple_choice",
         options: ["Bounce rate", "Average session duration", "Conversion rate"],
         loading: false,
@@ -36,7 +36,7 @@ export const QuestionaryData: QuestionarySection[] = [
     questions: [
       {
         question: "3. Which social media platforms do you actively use?",
-        answer: "",
+        answer: [],
         input_type: "multiple_choice",
         options: ["Facebook", "LinkedIn", "Twitter", "Instagram"],
         loading: false,
@@ -73,7 +73,7 @@ export const QuestionaryData: QuestionarySection[] = [
       {
         question:
           "7. Do you run any paid advertising campaigns? If yes, on which platforms?",
-        answer: "",
+        answer: [],
         input_type: "multiple_choice",
         options: ["Google Ads", "Facebook Ads", "LinkedIn Ads"],
         loading: false,
@@ -110,7 +110,7 @@ export const QuestionaryData: QuestionarySection[] = [
       {
         question:
           "10. What tools and platforms do you use for marketing and analytics?",
-        answer: "",
+        answer: [],
         input_type: "multiple_choice",
         options: ["Google Analytics", "HubSpot", "Salesforce"],
         loading: false,
@@ -128,7 +128,7 @@ export const QuestionaryData: QuestionarySection[] = [
       },
       {
         question: "12. What are the key skills and expertise within your team?",
-        answer: "",
+        answer: [],
         input_type: "multiple_choice",
         options: [
           "SEO expertise",

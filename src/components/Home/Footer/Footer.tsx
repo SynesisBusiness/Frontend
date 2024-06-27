@@ -9,8 +9,8 @@ const Footer: React.FC = () => {
   return (
     <styles.Container>
       <p>
-        <Copyright size={20} className="icon__copy" /> Copyright {year} Synesis.
-        Todos os direitos reservados
+        <Copyright size={20} className="icon__copy" /> Copyright 2024 Synesis.
+        All rights reserved
       </p>
     </styles.Container>
   );

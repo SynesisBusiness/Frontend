@@ -111,9 +111,10 @@ export const Main = styled.div`
 `;
 
 export const HelpSection = styled.div`
+  width: 100%;
   padding-top: 100px;
   display: flex;
-  width: 100%;
+  align-items: center;
 
   @media (max-width: 960px) {
     flex-direction: column;
@@ -127,7 +128,7 @@ export const HelpTitle = styled.div`
   h2 {
     font-size: 1.6rem;
     font-weight: 500;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     padding-right: 10px;
 
     @media (max-width: 599px) {
@@ -379,27 +380,32 @@ export const Contact = styled.div`
     margin-bottom: 20px;
   }
 
-  button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #373a36;
-    color: #fff;
-    border: transparent;
-    outline: transparent;
-    padding: 7px 30px;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    transition: 0.3s all;
-    width: 200px;
+  a {
+    text-decoration: none;
 
-    .icon__call {
-      margin-right: 5px;
-    }
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #373a36;
+      color: #fff;
+      border: transparent;
+      outline: transparent;
+      padding: 7px 30px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      transition: 0.3s all;
+      width: 200px;
+      text-decoration: none;
 
-    &:hover {
-      background-color: #111;
-      cursor: pointer;
+      .icon__call {
+        margin-right: 5px;
+      }
+
+      &:hover {
+        background-color: #111;
+        cursor: pointer;
+      }
     }
   }
 

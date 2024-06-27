@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ArrowCircleRight, ArrowRight, PhoneCall } from "phosphor-react";
+import { useNavigate } from "react-router-dom";
 
 import * as styles from "./styles/HomeStyles";
 
@@ -15,6 +16,8 @@ import Header from "../../components/Home/Header/Header";
 import Footer from "../../components/Home/Footer/Footer.tsx";
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
+
   const [flipped, setFlipped] = useState<{ [key: number]: boolean }>({});
 
   const handleFlip = (index: number) => {
@@ -115,7 +118,7 @@ const Home: React.FC = () => {
                 opportunities for improvement
               </p>
 
-              <button>
+              <button onClick={() => navigate("/account")}>
                 <ArrowRight size={18} color="#000" className="icon__arrow" />{" "}
                 Experiment now
               </button>
@@ -131,9 +134,16 @@ const Home: React.FC = () => {
             hesitate to share any questions you may have.
           </p>
 
-          <button>
-            <PhoneCall className="icon__call" size={18} /> Contact us
-          </button>
+          <a
+            href="https://api.whatsapp.com/send?phone=5514996168403"
+            className="icon"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button>
+              <PhoneCall className="icon__call" size={18} /> Contact us
+            </button>
+          </a>
         </styles.Contact>
 
         <Footer />

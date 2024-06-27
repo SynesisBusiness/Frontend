@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { RocketLaunch } from "phosphor-react";
 import { ToastContainer, toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 import * as styles from "./styles/FormOwnerStyles";
 
@@ -8,15 +10,14 @@ import logo from "../../assets/logos/logo.svg";
 
 import { QuestionnaireData } from "../../utils/FormOwner/Questionnaire";
 import { useContextApi } from "../../context/Api";
-import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
 
 interface Question {
   question: string;
-  answer: string;
+  answer: string | string[];
   input_type: "text" | "textarea" | "multiple_choice";
   loading: boolean;
   options?: string[];
+  range?: string;
 }
 
 interface QuestionnaireSection {
@@ -38,15 +39,39 @@ const FormOwner: React.FC = () => {
     value: string
   ) => {
     const newFormData = [...formData];
-    newFormData[sectionIndex].questions[questionIndex].answer = value;
+    const currentAnswer =
+      newFormData[sectionIndex].questions[questionIndex].answer;
+
+    if (Array.isArray(currentAnswer)) {
+      if (currentAnswer.includes(value)) {
+        // Remove the answer if it's already selected
+        newFormData[sectionIndex].questions[questionIndex].answer =
+          currentAnswer.filter((ans) => ans !== value);
+      } else {
+        // Add the answer if it's not selected
+        newFormData[sectionIndex].questions[questionIndex].answer = [
+          ...currentAnswer,
+          value,
+        ];
+      }
+    } else {
+      newFormData[sectionIndex].questions[questionIndex].answer = value;
+    }
+
     setFormData(newFormData);
   };
 
   const isFormComplete = () => {
     for (const section of formData) {
       for (const question of section.questions) {
-        if (question.answer.trim() === "") {
-          return false;
+        if (Array.isArray(question.answer)) {
+          if (question.answer.length === 0) {
+            return false;
+          }
+        } else {
+          if (question.answer.trim() === "") {
+            return false;
+          }
         }
       }
     }
@@ -80,7 +105,7 @@ const FormOwner: React.FC = () => {
       // make sure path field is gonna be in rules
       const normalizedFormData = [...formData];
       normalizedFormData[0].questions[0].answer = normalizeString(
-        normalizedFormData[0].questions[0].answer
+        normalizedFormData[0].questions[0].answer as string
       );
 
       await backendClient?.collection("form_responses_business_owner").create(
@@ -91,11 +116,14 @@ const FormOwner: React.FC = () => {
         { requestKey: null }
       );
 
-      await backendClient?.collection("companies").create({
-        user: decoded.id,
-        name: formData[0].questions[0].answer,
-        path: normalizedFormData[0].questions[0].answer,
-      });
+      await backendClient?.collection("companies").create(
+        {
+          user: decoded.id,
+          name: formData[0].questions[0].answer,
+          path: normalizedFormData[0].questions[0].answer,
+        },
+        { requestKey: null }
+      );
 
       toast("Form submitted successfully!");
 
@@ -157,19 +185,60 @@ const FormOwner: React.FC = () => {
                   />
                 )}
                 {question.input_type === "multiple_choice" && (
-                  <styles.Options>
-                    {question.options?.map((option, optionIndex) => (
-                      <styles.Option
-                        key={optionIndex}
-                        onClick={() =>
-                          handleInputChange(sectionIndex, questionIndex, option)
-                        }
-                        selected={question.answer === option}
+                  <>
+                    <styles.Options>
+                      {question.options?.map((option, optionIndex) => (
+                        <styles.Option
+                          type="button"
+                          key={optionIndex}
+                          selected={
+                            Array.isArray(question.answer)
+                              ? question.answer.includes(option)
+                              : question.answer === option
+                          }
+                          onClick={() =>
+                            handleInputChange(
+                              sectionIndex,
+                              questionIndex,
+                              option
+                            )
+                          }
+                        >
+                          {option}
+                        </styles.Option>
+                      ))}
+                    </styles.Options>
+
+                    {question.range === "Very poor - Excellent" && (
+                      <div
+                        style={{
+                          display: "flex",
+                          fontSize: "0.9rem",
+                        }}
                       >
-                        {option}
-                      </styles.Option>
-                    ))}
-                  </styles.Options>
+                        <span
+                          style={{
+                            marginRight: "180px",
+                            marginTop: "5px",
+                            color: "#555",
+                            fontSize: "0.85rem",
+                          }}
+                        >
+                          Very poor
+                        </span>
+                        <span
+                          style={{
+                            marginRight: "180px",
+                            marginTop: "5px",
+                            color: "#555",
+                            fontSize: "0.85rem",
+                          }}
+                        >
+                          Excellent
+                        </span>
+                      </div>
+                    )}
+                  </>
                 )}
               </styles.Question>
             ))}
