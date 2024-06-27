@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
   return (
     <styles.Container>
       <p>
-        <Copyright size={20} className="icon__copy" /> Copyright 2024 Synesis.
+        <Copyright size={20} className="icon__copy" /> Copyright {year} Synesis.
         All rights reserved
       </p>
     </styles.Container>
