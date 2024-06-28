@@ -16,6 +16,17 @@ export const Container = styled.div`
   justify-content: center;
 `;
 
+export const Logo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+
+  img {
+    width: 200px;
+  }
+`;
+
 export const LoadingScreen = styled.div`
   width: 100vw;
   height: 100vh;
@@ -46,18 +57,23 @@ export const Loading = styled.div`
 `;
 
 export const Main = styled.div`
-  min-width: 60vw;
+  width: 70vw;
+  padding: 50px 0px;
+
+  .separated {
+    border-bottom: 2px solid #78d2e5;
+    margin-bottom: 50px;
+    padding-bottom: 50px;
+  }
 
   @media (max-width: 1200px) {
-    padding: 0px 15px;
+    padding: 50px 15px;
   }
 `;
 
 export const ReportContainer = styled.div``;
 
-export const NextSteps = styled.div`
-  padding: 50px 0px;
-`;
+export const NextSteps = styled.div``;
 
 export const NextStepsTitle = styled.div`
   margin-bottom: 20px;
@@ -278,5 +294,114 @@ export const GrowthButton = styled.div`
   @media (max-width: 599px) {
     justify-content: center;
     padding-top: 20px;
+  }
+`;
+
+export const ReportError = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+
+  h3 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #333;
+  }
+`;
+
+export const Button = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+
+  button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 20px;
+    font-size: 0.95rem;
+    border: transparent;
+    outline: transparent;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s all;
+
+    .icon__rocket {
+      margin-left: 5px;
+      transition: 0.3s all;
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: #0056b3;
+
+      .icon__rocket {
+        transform: translateY(-3px);
+      }
+    }
+  }
+`;
+
+export const NoTextReport = styled.div`
+  h3 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #333;
+  }
+`;
+
+export const TextReport = styled.div`
+  p {
+    font-size: 1rem;
+  }
+
+  .container {
+    h1 {
+      font-size: 1.7rem;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    h2 {
+      margin-top: 30px;
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    .info {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    .list__container {
+      border: 2px solid #78d2e5;
+      border-radius: 15px;
+      padding: 20px;
+
+      ul {
+        list-style-position: inside;
+
+        li {
+          font-size: 1rem;
+          line-height: 2;
+        }
+      }
+    }
   }
 `;

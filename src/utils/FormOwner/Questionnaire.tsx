@@ -99,7 +99,7 @@ export const QuestionnaireData: QuestionnaireSection[] = [
     questions: [
       {
         question: "10.  What KPIs do you currently track?",
-        answer: "",
+        answer: [],
         input_type: "multiple_choice",
         options: [
           "Monthly sales",
