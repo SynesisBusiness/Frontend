@@ -141,5 +141,7 @@ export const getPromptDiagnosis = (questionary_data: string) => {
 
     - Do not provide any response output other than the html I requested, do not include, for example, (tags other than those I requested in the structure above, nor accents)
     - Do not start the html output answer with backtick and the word html, neither in the final of the structure, only provide in the answer the scruture that I provided, starting with <div class="container">, and ending with </div>, nothing more
+
+    Ensure for dont provide anything else after or before the struct html that I provided, dont start with other tag or other, just <div class="container"> and the rest, and make sure the end is </div>. This is important, because the layout depends on this structure, so, you have to be very carefully about this
  `;
 };
