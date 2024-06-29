@@ -13,7 +13,7 @@ export const ImageBackground = styled.div`
 `;
 
 export const BannerContent = styled.div`
-  background: linear-gradient(to right, #ffffffca, rgba(255, 255, 255, 0));
+  background: linear-gradient(to right, #ffffffc1, #ffffff38);
   position: absolute;
   bottom: 0;
   top: 0;
@@ -37,7 +37,7 @@ export const BannerMain = styled.div`
 
 export const BannerText = styled.div`
   h1 {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     font-weight: 600;
     margin-bottom: 10px;
 

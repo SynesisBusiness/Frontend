@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { RocketLaunch } from "phosphor-react";
 import { ToastContainer, toast } from "react-toastify";
@@ -156,6 +157,7 @@ const FormOwner: React.FC = () => {
         ?.collection("diagnosis")
         .getFullList({
           filter: `user="${decoded.id}"`,
+          requestKey: null,
         });
 
       if (responses && responses.length >= 1) {

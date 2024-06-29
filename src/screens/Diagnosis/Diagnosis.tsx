@@ -21,7 +21,7 @@ import * as styles from "./styles/DiagnosisStyles";
 import logo from "../../assets/logos/logo.svg";
 
 import { useContextApi } from "../../context/Api";
-import { getPromptDiagnosis } from "../../utils/Prompts/Diagnosis/PrompDiagnosis";
+import { getPromptDiagnosis } from "../../utils/Prompts/Diagnosis/PromptDiagnosis";
 
 interface Company {
   id: string;
@@ -54,18 +54,21 @@ const Diagnosis: React.FC = () => {
   const [diagnosis, setDiagnosis] = useState<Diagnosis>();
   const [errorGenerated, setErrorGenerated] = useState<boolean>(false);
 
+  // growth plan
+  const [loadingGrowthDiagnosis, setLoadingGrowthDiagnosis] =
+    useState<boolean>(false);
+  const [hasGrowthDiagnosis, setHasGrowthDiagnosis] = useState<boolean>(false);
+
   // steps
   const [stepsBlocked, setStepsBlocked] = useState({
     one: false,
     two: true,
     three: true,
-    four: true,
   });
   const [stepsFinished, setStepsFinished] = useState({
     one: false,
     two: false,
     three: false,
-    four: false,
   });
 
   // company
@@ -76,16 +79,10 @@ const Diagnosis: React.FC = () => {
   const [loadingReports, setLoadingReports] = useState<boolean>(true);
   const [reportsClients, setReportsClients] = useState<ReportClient[]>([]);
 
-  // social media
-  const [instagramChecked, setInstagramChecked] = useState(false);
-  const [linkedinChecked, setLinkedinChecked] = useState(false);
-  const [dataMedia, setDataMedia] = useState({
-    instagram: "",
-    linkedin: "",
-  });
-
-  // website
-  const [dataWebsite, setDataWebsite] = useState("");
+  // excel file
+  const [excelFile, setExcelFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
 
   const generateDiagnosis = async () => {
     setLoading(true);
@@ -117,7 +114,6 @@ const Diagnosis: React.FC = () => {
 
           const prompt = getPromptDiagnosis(diagnosisData.questionary_data);
 
-          console.log(prompt);
           axios.post(`https://synesisbusiness.com/api/ask`, {
             prompt: prompt,
             diagnosisId: diagnosisData.id,
@@ -133,6 +129,51 @@ const Diagnosis: React.FC = () => {
     }
 
     setLoading(false);
+  };
+
+  const generateGrowthDiagnosis = async () => {
+    setLoadingGrowthDiagnosis(true);
+
+    try {
+      const decoded: { id: string } = jwtDecode(
+        localStorage.getItem("tokenJWT") as string
+      );
+
+      await backendClient?.collection("growth_plan").create({
+        user: decoded.id,
+        company: company?.id,
+      });
+
+      navigate("/diagnosis/growth");
+    } catch (e) {
+      console.log(`error generate diagnosis: ${e}`);
+      setErrorGenerated(true);
+    }
+
+    setLoadingGrowthDiagnosis(false);
+  };
+
+  const getGrowthDiagnosis = async () => {
+    try {
+      const decoded: { id: string } = jwtDecode(
+        localStorage.getItem("tokenJWT") as string
+      );
+
+      const responses = await backendClient
+        ?.collection("growth_plan")
+        .getFullList({
+          filter: `user="${decoded.id}"`,
+          requestKey: null,
+        });
+
+      if (responses && responses.length >= 1) {
+        setHasGrowthDiagnosis(true);
+      } else {
+        setHasGrowthDiagnosis(false);
+      }
+    } catch (e) {
+      console.log(`error get growth diagnosis: ${e}`);
+    }
   };
 
   const getCompany = async () => {
@@ -171,13 +212,90 @@ const Diagnosis: React.FC = () => {
       setReportsClients(response as unknown as ReportClient[]);
 
       if (response && response?.length >= 3) {
-        setStepsFinished({ ...stepsFinished, one: true });
+        setStepsFinished((prev) => ({ ...prev, one: true }));
       }
     } catch (e) {
       console.log(`error get costumers reports: ${e}`);
     }
 
     setLoadingReports(false);
+  };
+
+  const getFileExcel = async () => {
+    const decoded: { id: string } = jwtDecode(
+      localStorage.getItem("tokenJWT") as string
+    );
+
+    try {
+      const responses = await backendClient
+        ?.collection("analytics_excel")
+        .getFullList({
+          filter: `user="${decoded.id}"`,
+          requestKey: null,
+        });
+
+      if (responses && responses.length >= 1) {
+        setStepsFinished((prev) => ({ ...prev, two: true }));
+      }
+    } catch (e) {
+      console.log(`error get file excel: ${e}`);
+    }
+  };
+
+  const handleExcelFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setExcelFile(e.target.files[0]);
+      setUploadSuccess(false);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!excelFile) return;
+
+    setUploading(true);
+
+    const decoded: { id: string } = jwtDecode(
+      localStorage.getItem("tokenJWT") as string
+    );
+
+    const formData = new FormData();
+    formData.append("file", excelFile);
+
+    if (!stepsFinished.two) {
+      formData.append("user", decoded.id);
+    }
+
+    try {
+      if (!stepsFinished.two) {
+        await backendClient?.collection("analytics_excel").create(formData);
+      } else {
+        const responses = await backendClient
+          ?.collection("analytics_excel")
+          .getFullList({
+            filter: `user="${decoded.id}"`,
+            requestKey: null,
+          });
+
+        if (responses) {
+          const analyticsData = responses[0];
+
+          await backendClient
+            ?.collection("analytics_excel")
+            .update(analyticsData?.id as string, formData);
+        }
+      }
+
+      setUploadSuccess(true);
+      toast("Upload successful");
+      setStepsFinished((prev) => ({ ...prev, two: true }));
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      toast("Error uploading file", {
+        type: "error",
+      });
+    } finally {
+      setUploading(false);
+    }
   };
 
   const getFormOnwer2 = async () => {
@@ -194,7 +312,7 @@ const Diagnosis: React.FC = () => {
         });
 
       if (response && response[0]?.responses_form2) {
-        setStepsFinished({ ...stepsFinished, four: true });
+        setStepsFinished((prev) => ({ ...prev, three: true }));
       }
     } catch (e) {
       console.log(`error get form owner 2: ${e}`);
@@ -204,6 +322,7 @@ const Diagnosis: React.FC = () => {
   useEffect(() => {
     if (company) {
       getCostumersReports();
+      getFileExcel();
       getFormOnwer2();
     }
   }, [company]);
@@ -212,21 +331,52 @@ const Diagnosis: React.FC = () => {
     if (backendClient) {
       generateDiagnosis();
       getCompany();
+      getGrowthDiagnosis();
     }
   }, [backendClient]);
 
   useEffect(() => {
-    const { one, two, three } = stepsFinished;
-    if (one && stepsBlocked.two) {
-      setStepsBlocked((prev) => ({ ...prev, two: false }));
-    }
-    if (two && stepsBlocked.three) {
-      setStepsBlocked((prev) => ({ ...prev, three: false }));
-    }
-    if (three && stepsBlocked.four) {
-      setStepsBlocked((prev) => ({ ...prev, four: false }));
-    }
+    console.log("Steps Finished Updated:", stepsFinished);
+    setStepsBlocked((prev) => ({
+      ...prev,
+      two: stepsFinished.one ? false : prev.two,
+      three: stepsFinished.two ? false : prev.three,
+    }));
   }, [stepsFinished]);
+
+  useEffect(() => {
+    let intervalId: number | null;
+
+    const checkDiagnosis = async () => {
+      try {
+        const response = await backendClient
+          ?.collection("diagnosis")
+          .getOne(diagnosis?.id as string, { requestKey: null });
+
+        const updatedDiagnosis: Diagnosis | undefined = response as
+          | Diagnosis
+          | undefined;
+
+        if (updatedDiagnosis?.report) {
+          setDiagnosis(updatedDiagnosis);
+          setIsGenerating(false);
+          clearInterval(intervalId as number);
+        }
+      } catch (error) {
+        console.error("Error updating diagnosis:", error);
+      }
+    };
+
+    if (isGenerating) {
+      intervalId = setInterval(checkDiagnosis, 3000);
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [isGenerating]);
 
   return (
     <styles.Container>
@@ -235,8 +385,8 @@ const Diagnosis: React.FC = () => {
           <styles.Loading>
             <h2>
               {isGenerating
-                ? "The Diagnosis is being generated"
-                : "Loading the diagnosis..."}
+                ? "The Growth objective assessment is being generated"
+                : "Loading the dignosis..."}
             </h2>
 
             <p>
@@ -265,7 +415,7 @@ const Diagnosis: React.FC = () => {
           >
             {errorGenerated && (
               <styles.ReportError>
-                <h3>Error when generating your diagnosis</h3>
+                <h3>Error when generating your growth objective assessment</h3>
 
                 <p>
                   An error occurred while processing your diagnosis, please try
@@ -290,7 +440,7 @@ const Diagnosis: React.FC = () => {
                       localStorage.getItem("pocketbase_auth") as string
                     ).model.name
                   }
-                  , your diagnosis is being generated
+                  , your growth objective assessment is being generated
                 </h3>
 
                 <p>
@@ -310,7 +460,7 @@ const Diagnosis: React.FC = () => {
             )}
           </styles.ReportContainer>
 
-          {!errorGenerated && diagnosis?.report && (
+          {!errorGenerated && diagnosis?.report && !hasGrowthDiagnosis && (
             <styles.NextSteps>
               <styles.NextStepsTitle>
                 <h2>
@@ -323,7 +473,7 @@ const Diagnosis: React.FC = () => {
                 </h2>
 
                 <p className="info">
-                  Complete the 4 steps below to achieve your growth diagnosis
+                  Complete the 4 steps below to achieve your growth diagnostics
                 </p>
               </styles.NextStepsTitle>
 
@@ -439,74 +589,39 @@ const Diagnosis: React.FC = () => {
                       />
                     )}
                     <span>
-                      {" "}
-                      2. Add your Instagram and Linkedin profile in the
-                      indicated fields and complete the process in the video
-                      below
+                      2. Upload analytics with your social media metrics
                     </span>
                   </h3>
 
                   {(!stepsBlocked.two || stepsFinished.two) && (
                     <styles.StepBody>
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={instagramChecked}
-                          onChange={(e) =>
-                            setInstagramChecked(e.target.checked)
-                          }
-                          style={{ display: "none" }}
-                        />
-                        <styles.CustomCheckbox checked={instagramChecked}>
-                          {instagramChecked && (
-                            <CheckCircle size={20} color="#78d2e5" />
-                          )}
-                        </styles.CustomCheckbox>
-                        Instagram
-                      </label>
+                      <styles.UploadFile>
+                        <input type="file" onChange={handleExcelFileChange} />
 
-                      {instagramChecked && (
-                        <input
-                          type="text"
-                          value={dataMedia.instagram}
-                          onChange={(e) =>
-                            setDataMedia({
-                              ...dataMedia,
-                              instagram: e.target.value,
-                            })
+                        <button
+                          onClick={() => {
+                            if (excelFile) {
+                              handleUpload();
+                            } else {
+                              toast("Attach the analytics first", {
+                                type: "warning",
+                              });
+                            }
+                          }}
+                          disabled={uploading}
+                          style={
+                            excelFile
+                              ? {}
+                              : { border: "2px solid #aaa", color: "#aaa" }
                           }
-                          placeholder="Enter your Instagram profile"
-                        />
-                      )}
-
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={linkedinChecked}
-                          onChange={(e) => setLinkedinChecked(e.target.checked)}
-                          style={{ display: "none" }}
-                        />
-                        <styles.CustomCheckbox checked={linkedinChecked}>
-                          {linkedinChecked && (
-                            <CheckCircle size={20} color="#78d2e5" />
-                          )}
-                        </styles.CustomCheckbox>
-                        LinkedIn
-                      </label>
-
-                      {linkedinChecked && (
-                        <input
-                          type="text"
-                          value={dataMedia.linkedin}
-                          onChange={(e) =>
-                            setDataMedia({
-                              ...dataMedia,
-                              linkedin: e.target.value,
-                            })
-                          }
-                          placeholder="Enter your LinkedIn profile"
-                        />
-                      )}
+                        >
+                          {uploading
+                            ? "Uploading..."
+                            : uploadSuccess
+                            ? "Upload Successful"
+                            : "Upload File"}
+                        </button>
+                      </styles.UploadFile>
                     </styles.StepBody>
                   )}
                 </styles.Step>
@@ -537,54 +652,23 @@ const Diagnosis: React.FC = () => {
                         className="icon__check"
                       />
                     )}
-                    <span>3. Send your website link</span>
+                    <span>3. Answer the questionnaire 2</span>
                   </h3>
 
-                  {(!stepsBlocked.three || stepsFinished.three) && (
+                  {!stepsBlocked.three && (
                     <styles.StepBody>
-                      <input
-                        type="text"
-                        value={dataWebsite}
-                        onChange={(e) => setDataWebsite(e.target.value)}
-                        placeholder="Enter your website link..."
-                      />
-                    </styles.StepBody>
-                  )}
-                </styles.Step>
-
-                <styles.Step>
-                  <h3
-                    className={stepsBlocked.four ? "blocked" : ""}
-                    style={stepsFinished.four ? { color: "#008000" } : {}}
-                  >
-                    {stepsBlocked.four && !stepsFinished.four && (
-                      <LockSimple
-                        size={20}
-                        color="#777"
-                        className="icon__lock"
-                      />
-                    )}
-                    {!stepsBlocked.four && !stepsFinished.four && (
-                      <LockSimpleOpen
-                        size={20}
-                        color="#000"
-                        className="icon__lock"
-                      />
-                    )}
-                    {stepsFinished.four && (
-                      <CheckCircle
-                        color="#008000"
-                        size={20}
-                        className="icon__check"
-                      />
-                    )}
-                    <span>4. Answer the questionnaire 2</span>
-                  </h3>
-
-                  {(!stepsBlocked.four || stepsFinished.four) && (
-                    <styles.StepBody>
-                      <button onClick={() => navigate("/forms/business/2")}>
-                        Answer questionnaire
+                      <button
+                        onClick={() => {
+                          if (stepsFinished.three === false) {
+                            navigate("/forms/business/2");
+                          } else {
+                            toast("You have already answered");
+                          }
+                        }}
+                      >
+                        {stepsFinished.three
+                          ? "Answered already"
+                          : "Answer questionnaire"}
                       </button>
                     </styles.StepBody>
                   )}
@@ -597,10 +681,9 @@ const Diagnosis: React.FC = () => {
                     if (
                       stepsFinished.one &&
                       stepsFinished.two &&
-                      stepsFinished.three &&
-                      stepsFinished.four
+                      stepsFinished.three
                     ) {
-                      // generate growth plan
+                      generateGrowthDiagnosis();
                     } else {
                       toast("Please complete the 4 steps", {
                         type: "warning",
@@ -610,17 +693,46 @@ const Diagnosis: React.FC = () => {
                   className={
                     stepsFinished.one &&
                     stepsFinished.two &&
-                    stepsFinished.three &&
-                    stepsFinished.four
+                    stepsFinished.three
                       ? ""
                       : "disabled"
                   }
                 >
-                  Generate growth diagnosis{" "}
-                  <RocketLaunch size={20} className="icon__rocket" />
+                  {loadingGrowthDiagnosis ? (
+                    "Wait..."
+                  ) : (
+                    <>
+                      Generate growth diagnostics{" "}
+                      <RocketLaunch size={20} className="icon__rocket" />
+                    </>
+                  )}
                 </button>
               </styles.GrowthButton>
             </styles.NextSteps>
+          )}
+
+          {hasGrowthDiagnosis && (
+            <styles.HasDiagnosis>
+              <h2>
+                Hello{" "}
+                {
+                  JSON.parse(localStorage.getItem("pocketbase_auth") as string)
+                    .model.name
+                }
+              </h2>
+
+              <p>
+                you have already generated your growth diagnosis, view it by
+                clicking the button below
+              </p>
+
+              <styles.Button>
+                <button onClick={() => navigate("/diagnosis/growth")}>
+                  See growth diagnosis{" "}
+                  <RocketLaunch size={20} className="icon__rocket" />
+                </button>
+              </styles.Button>
+            </styles.HasDiagnosis>
           )}
         </styles.Main>
       )}

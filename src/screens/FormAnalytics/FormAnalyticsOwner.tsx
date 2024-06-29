@@ -1,4 +1,10 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
+import { RocketLaunch } from "phosphor-react";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+
 import {
   Container,
   Main,
@@ -8,11 +14,9 @@ import {
   Button,
   Action,
   Logo,
+  HasDiagnosis,
+  BackRedirect,
 } from "./styles/FormAnalyticsOwnerStyles";
-import { RocketLaunch } from "phosphor-react";
-import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 
 import logo from "../../assets/logos/logo.svg";
 
@@ -39,6 +43,7 @@ const FormAnalyticsOwner: React.FC = () => {
   const [formData, setFormData] =
     useState<QuestionarySection[]>(QuestionaryData);
   const [loadingRequest, setLoadingRequest] = useState<boolean>(false);
+  const [hasDiagnosis, setHasDiagnosis] = useState<boolean>(false);
 
   const handleInputChange = (
     sectionIndex: number,
@@ -133,89 +138,150 @@ const FormAnalyticsOwner: React.FC = () => {
     }
   };
 
+  const verifyDiagnosis = async () => {
+    try {
+      const decoded: { id: string } = jwtDecode(
+        localStorage.getItem("tokenJWT") as string
+      );
+
+      const responses = await backendClient
+        ?.collection("form_responses_business_owner")
+        .getFullList({
+          filter: `user="${decoded.id}"`,
+          requestKey: null,
+        });
+
+      console.log(responses);
+      if (responses && responses[0].responses_form2) {
+        setHasDiagnosis(true);
+      } else {
+        setHasDiagnosis(false);
+      }
+    } catch (e) {
+      console.log(`error verify diagnosis: ${e}`);
+    }
+  };
+
+  useEffect(() => {
+    if (backendClient) {
+      verifyDiagnosis();
+    }
+  }, [backendClient]);
+
   return (
     <Container>
       <Main>
         <Logo>
           <img src={logo} alt="Logo synesis" />
         </Logo>
-        <Title>
-          <h1>Not long!</h1>
-          <p>
-            Answer the questionnaire below and your complete report will be
-            generated at the end.
-          </p>
-        </Title>
-        <Form onSubmit={handleSubmit}>
-          {formData.map((section, sectionIndex) => (
-            <div key={sectionIndex}>
-              <h3>{section.section}</h3>
-              {section.questions.map((question, questionIdx) => (
-                <Question key={questionIdx}>
-                  <label>{`${question.question}`}</label>
-                  {question.input_type === "text" && (
-                    <input
-                      type="text"
-                      value={question.answer}
-                      onChange={(e) =>
-                        handleInputChange(
-                          sectionIndex,
-                          questionIdx,
-                          e.target.value
-                        )
-                      }
-                      placeholder="Type here..."
-                    />
-                  )}
-                  {question.input_type === "textarea" && (
-                    <textarea
-                      value={question.answer}
-                      onChange={(e) =>
-                        handleInputChange(
-                          sectionIndex,
-                          questionIdx,
-                          e.target.value
-                        )
-                      }
-                      placeholder="Type here..."
-                    />
-                  )}
-                  {question.input_type === "multiple_choice" && (
-                    <div className="buttonGroup">
-                      {question.options?.map((option, optionIndex) => (
-                        <Button
-                          type="button"
-                          key={optionIndex}
-                          onClick={() =>
-                            handleInputChange(sectionIndex, questionIdx, option)
+
+        {!hasDiagnosis && (
+          <>
+            <Title>
+              <h1>Not long!</h1>
+              <p>
+                Answer the questionnaire below and your complete report will be
+                generated at the end.
+              </p>
+            </Title>
+
+            <Form onSubmit={handleSubmit}>
+              {formData.map((section, sectionIndex) => (
+                <div key={sectionIndex}>
+                  <h3>{section.section}</h3>
+                  {section.questions.map((question, questionIdx) => (
+                    <Question key={questionIdx}>
+                      <label>{`${question.question}`}</label>
+                      {question.input_type === "text" && (
+                        <input
+                          type="text"
+                          value={question.answer}
+                          onChange={(e) =>
+                            handleInputChange(
+                              sectionIndex,
+                              questionIdx,
+                              e.target.value
+                            )
                           }
-                          selected={
-                            Array.isArray(question.answer)
-                              ? question.answer.includes(option)
-                              : question.answer === option
+                          placeholder="Type here..."
+                        />
+                      )}
+                      {question.input_type === "textarea" && (
+                        <textarea
+                          value={question.answer}
+                          onChange={(e) =>
+                            handleInputChange(
+                              sectionIndex,
+                              questionIdx,
+                              e.target.value
+                            )
                           }
-                        >
-                          {option}
-                        </Button>
-                      ))}
-                    </div>
-                  )}
-                </Question>
+                          placeholder="Type here..."
+                        />
+                      )}
+                      {question.input_type === "multiple_choice" && (
+                        <div className="buttonGroup">
+                          {question.options?.map((option, optionIndex) => (
+                            <Button
+                              type="button"
+                              key={optionIndex}
+                              onClick={() =>
+                                handleInputChange(
+                                  sectionIndex,
+                                  questionIdx,
+                                  option
+                                )
+                              }
+                              selected={
+                                Array.isArray(question.answer)
+                                  ? question.answer.includes(option)
+                                  : question.answer === option
+                              }
+                            >
+                              {option}
+                            </Button>
+                          ))}
+                        </div>
+                      )}
+                    </Question>
+                  ))}
+                </div>
               ))}
-            </div>
-          ))}
-          <Action>
-            <button type="submit">
-              {loadingRequest ? (
-                "Wait..."
-              ) : (
-                <>
-                  Submit <RocketLaunch size={20} className="icon__rocket" />
-                </>
-              )}
-            </button>
-          </Action>
-        </Form>
+              <Action>
+                <button type="submit">
+                  {loadingRequest ? (
+                    "Wait..."
+                  ) : (
+                    <>
+                      Submit <RocketLaunch size={20} className="icon__rocket" />
+                    </>
+                  )}
+                </button>
+              </Action>
+            </Form>
+          </>
+        )}
+
+        {hasDiagnosis && (
+          <HasDiagnosis>
+            <h2>
+              Hello{" "}
+              {
+                JSON.parse(localStorage.getItem("pocketbase_auth") as string)
+                  .model.name
+              }
+            </h2>
+
+            <p>
+              You have already answered the questionnaire and can now generate
+              your growth diagnosis
+            </p>
+
+            <BackRedirect onClick={() => navigate("/diagnosis")}>
+              Experiment now <RocketLaunch size={20} className="icon__rocket" />
+            </BackRedirect>
+          </HasDiagnosis>
+        )}
       </Main>
 
       <ToastContainer />

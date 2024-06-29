@@ -7,7 +7,9 @@ import FormClient from "./screens/FormClients/FormClient";
 import FormOwner from "./screens/FormOwner/FormOwner";
 import FormAnalyticsOwner from "./screens/FormAnalytics/FormAnalyticsOwner";
 import Diagnosis from "./screens/Diagnosis/Diagnosis";
+
 import { useAuth } from "./context/AuthContext";
+import GrowthPlan from "./screens/GrowthPlan/GrowthPlan";
 
 interface PrivateProps {
   children: React.ReactNode;
@@ -56,6 +58,15 @@ const Router = () => {
           element={
             <PrivateRoute>
               <Diagnosis />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/diagnosis/growth"
+          element={
+            <PrivateRoute>
+              <GrowthPlan />
             </PrivateRoute>
           }
         />

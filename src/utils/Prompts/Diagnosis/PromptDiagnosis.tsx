@@ -74,7 +74,7 @@ export const getPromptDiagnosis = (questionary_data: string) => {
     Now, using the Information, I want you to generate a customized growth hacking launch plan for me in this HTML format only: 
 
     <div class="container">
-        <h1>Growth Diagnostics for {{Project Name}}</h1>
+        <h1>Growth objective assessment for {{Project Name}}</h1>
 
         <h2>Recommended Data Tracking Setup</h2>
 

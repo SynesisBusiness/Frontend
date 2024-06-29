@@ -198,6 +198,47 @@ export const Error = styled.div`
   }
 `;
 
+export const HasDiagnosis = styled.div`
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+
+  p {
+    font-size: 1rem;
+    margin-bottom: 40px;
+  }
+`;
+
+export const BackRedirect = styled.div`
+  background-color: #007bff;
+  color: #fff;
+  padding: 8px 20px;
+  font-size: 0.95rem;
+  border: transparent;
+  outline: transparent;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s all;
+  width: 200px;
+
+  .icon__rocket {
+    margin-left: 5px;
+    transition: 0.3s all;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: #0056b3;
+
+    .icon__rocket {
+      transform: translateY(-3px);
+    }
+  }
+`;
+
 export default {
   Container,
   Main,
@@ -207,4 +248,6 @@ export default {
   Button,
   Action,
   Error,
+  HasDiagnosis,
+  BackRedirect,
 };

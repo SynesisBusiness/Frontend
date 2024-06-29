@@ -444,15 +444,3 @@ export const TextReport = styled.div`
     }
   }
 `;
-
-export const HasDiagnosis = styled.div`
-  h2 {
-    font-size: 1.4rem;
-    font-weight: 500;
-  }
-
-  p {
-    font-size: 1rem;
-    margin-bottom: 40px;
-  }
-`;
