@@ -596,7 +596,11 @@ const Diagnosis: React.FC = () => {
                   {(!stepsBlocked.two || stepsFinished.two) && (
                     <styles.StepBody>
                       <styles.UploadFile>
-                        <input type="file" onChange={handleExcelFileChange} />
+                        <input
+                          type="file"
+                          onChange={handleExcelFileChange}
+                          accept=".xlsx"
+                        />
 
                         <button
                           onClick={() => {
