@@ -104,6 +104,22 @@ const FormOwner: React.FC = () => {
         localStorage.getItem("tokenJWT") as string
       );
 
+      let companyCreatedAlready;
+
+      try {
+        const responses = await backendClient
+          ?.collection("companies")
+          .getFullList({
+            filter: `user="${decoded.id}"`,
+          });
+
+        if (responses) {
+          companyCreatedAlready = responses[0];
+        }
+      } catch (e) {
+        console.log(`trying to get company: ${e}`);
+      }
+
       // make sure path field is gonna be in rules
       const normalizedFormData = [...formData];
       normalizedFormData[0].questions[0].answer = normalizeString(
@@ -118,22 +134,30 @@ const FormOwner: React.FC = () => {
         { requestKey: null }
       );
 
-      const companyCreated = await backendClient
-        ?.collection("companies")
-        .create(
-          {
-            user: decoded.id,
-            name: formData[0].questions[0].answer,
-            path: normalizedFormData[0].questions[0].answer,
-          },
-          { requestKey: null }
-        );
+      if (companyCreatedAlready) {
+        await backendClient?.collection("diagnosis").create({
+          user: decoded.id,
+          company: companyCreatedAlready?.id,
+          questionary_data: JSON.stringify(formData),
+        });
+      } else {
+        const companyCreated = await backendClient
+          ?.collection("companies")
+          .create(
+            {
+              user: decoded.id,
+              name: formData[0].questions[0].answer,
+              path: normalizedFormData[0].questions[0].answer,
+            },
+            { requestKey: null }
+          );
 
-      await backendClient?.collection("diagnosis").create({
-        user: decoded.id,
-        company: companyCreated?.id,
-        questionary_data: JSON.stringify(formData),
-      });
+        await backendClient?.collection("diagnosis").create({
+          user: decoded.id,
+          company: companyCreated?.id,
+          questionary_data: JSON.stringify(formData),
+        });
+      }
 
       toast("Form submitted successfully!");
 
