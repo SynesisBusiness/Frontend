@@ -511,7 +511,7 @@ const Diagnosis: React.FC = () => {
                     <div className="form__copy">
                       <CopyToClipboard
                         text={`https://synesisbusiness.com/forms/costumers/${
-                          !loadingCompany && company?.path
+                          !loadingCompany && company?.path.toLowerCase()
                         }`}
                         onCopy={() => {
                           if (loadingCompany) {

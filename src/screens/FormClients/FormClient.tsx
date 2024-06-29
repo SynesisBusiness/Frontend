@@ -238,7 +238,7 @@ const FormClient: React.FC = () => {
       const response = await backendClient
         ?.collection("companies")
         .getFullList({
-          filter: `path="${path_company}"`,
+          filter: `path="${path_company?.toLowerCase()}"`,
           requestKey: null,
         });
 
