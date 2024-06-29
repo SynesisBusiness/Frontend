@@ -111,6 +111,7 @@ const FormOwner: React.FC = () => {
           ?.collection("companies")
           .getFullList({
             filter: `user="${decoded.id}"`,
+            requestKey: null,
           });
 
         if (responses) {

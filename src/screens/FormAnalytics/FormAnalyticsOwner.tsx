@@ -112,6 +112,7 @@ const FormAnalyticsOwner: React.FC = () => {
         ?.collection("form_responses_business_owner")
         .getFullList({
           filter: `user="${decoded.id}"`,
+          requestKey: null,
         });
 
       if (!forms || forms.length === 0) {

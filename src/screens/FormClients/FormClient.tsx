@@ -239,7 +239,10 @@ const FormClient: React.FC = () => {
         ?.collection("companies")
         .getFullList({
           filter: `path="${path_company}"`,
+          requestKey: null,
         });
+
+      console.log(response);
 
       if (!response || response?.length === 0) {
         setUnknownForm(true);
