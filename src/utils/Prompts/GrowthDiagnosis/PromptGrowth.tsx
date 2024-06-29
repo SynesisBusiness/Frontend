@@ -144,7 +144,7 @@ export const getPromptGrowth = (
 
         <div class="list__container">
             <ul>
-                <!-- Here in the <li></li> tags you have to develop the text on the subject that is between {{<subject>}}, do not bring the literal subject in the output html, but rather the text developed by you based on the excel file with the company's social media data and based on 3 types of form, the first (answered by the company's business owner), the second (answered by the company's business owner) and the third (answered by customers who use the company's product) -->
+                <!-- Here in the <li></li> tags you have to develop the text on the subject that is between {{<subject>}}, do not bring the literal subject or almost the same words than the subject in the output html, but rather the text developed by you based on the excel file with the company's social media data and based on 3 types of form, the first (answered by the company's business owner), the second (answered by the company's business owner) and the third (answered by customers who use the company's product). Remember to develop a text on the topic like an expert, at least 2 lines on each subject -->
 
                 <li>{{ SEO and Content Marketing }}</li>
                 <li>{{Social Media Marketing}}</li>
@@ -157,7 +157,7 @@ export const getPromptGrowth = (
 
         <div class="list__container">
             <ul>
-                <!-- Here in the <li></li> tags you have to develop the text on the subject that is between {{<subject>}}, do not bring the literal subject in the output html, but rather the text developed by you based on the excel file with the company's social media data and based on 3 types of form, the first (answered by the company's business owner), the second (answered by the company's business owner) and the third (answered by customers who use the company's product) -->
+                <!-- Here in the <li></li> tags you have to develop the text on the subject that is between {{<subject>}}, do not bring the literal subject in the output html, but rather the text developed by you based on the excel file with the company's social media data and based on 3 types of form, the first (answered by the company's business owner), the second (answered by the company's business owner) and the third (answered by customers who use the company's product). Remember to develop a text on the topic like an expert, at least 2 lines on each subject -->
 
                 <li>{{User Onboarding}}</li>
                 <li>{{Feature Prioritization}}</li>
@@ -170,7 +170,7 @@ export const getPromptGrowth = (
 
         <div class="list__container">
             <ul>
-                <!-- Here in the <li></li> tags you have to develop the text on the subject that is between {{<subject>}}, do not bring the literal subject in the output html, but rather the text developed by you based on the excel file with the company's social media data and based on 3 types of form, the first (answered by the company's business owner), the second (answered by the company's business owner) and the third (answered by customers who use the company's product) -->
+                <!-- Here in the <li></li> tags you have to develop the text on the subject that is between {{<subject>}}, do not bring the literal subject in the output html, but rather the text developed by you based on the excel file with the company's social media data and based on 3 types of form, the first (answered by the company's business owner), the second (answered by the company's business owner) and the third (answered by customers who use the company's product). Remember to develop a text on the topic like an expert, at least 2 lines on each subject -->
 
                 <li>{{Email Marketing}}</li>
                 <li>{{Push Notifications}}</li>
@@ -183,7 +183,7 @@ export const getPromptGrowth = (
 
         <div class="list__container">
             <ul>
-                <!-- Here in the <li></li> tags you have to develop the text on the subject that is between {{<subject>}}, do not bring the literal subject in the output html, but rather the text developed by you based on the excel file with the company's social media data and based on 3 types of form, the first (answered by the company's business owner), the second (answered by the company's business owner) and the third (answered by customers who use the company's product) -->
+                <!-- Here in the <li></li> tags you have to develop the text on the subject that is between {{<subject>}}, do not bring the literal subject in the output html, but rather the text developed by you based on the excel file with the company's social media data and based on 3 types of form, the first (answered by the company's business owner), the second (answered by the company's business owner) and the third (answered by customers who use the company's product). Remember to develop a text on the topic like an expert, at least 2 lines on each subject -->
 
                 <li>{{Setting up Analytics Tools}}</li>
                 <li>{{Regularly Monitoring KPIs}}</li>
@@ -195,7 +195,7 @@ export const getPromptGrowth = (
 
         <div class="list__container">
             <ul>
-                <!-- Here in the <li></li> tags you have to develop the text on the subject that is between {{<subject>}}, do not bring the literal subject in the output html, but rather the text developed by you based on the excel file with the company's social media data and based on 3 types of form, the first (answered by the company's business owner), the second (answered by the company's business owner) and the third (answered by customers who use the company's product) -->
+                <!-- Here in the <li></li> tags you have to develop the text on the subject that is between {{<subject>}}, do not bring the literal subject in the output html, but rather the text developed by you based on the excel file with the company's social media data and based on 3 types of form, the first (answered by the company's business owner), the second (answered by the company's business owner) and the third (answered by customers who use the company's product). Remember to develop a text on the topic like an expert, at least 2 lines on each subject -->
                 
                 <li>{{Automating Processes}}</li>
                 <li>{{Building Scalable Infrastructure}}</li>
